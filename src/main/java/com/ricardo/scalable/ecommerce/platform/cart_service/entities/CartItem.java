@@ -1,33 +1,41 @@
 package com.ricardo.scalable.ecommerce.platform.cart_service.entities;
 
-import java.sql.Timestamp;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
-import com.ricardo.scalable.ecommerce.platform.libs_common.entities.User;
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.ricardo.scalable.ecommerce.platform.libs_common.entities.ProductSku;
 
 @Entity
-@Table(name = "cart")
-public class Cart {
+@Table(name = "cart_items")
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
     @NotNull
-    private User user;
+    private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "product_sku_id")
+    @NotNull
+    private ProductSku productSku;
+
+    @NotNull
+    private int quantity;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -37,12 +45,14 @@ public class Cart {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    public Cart() {
+    public CartItem() {
     }
 
-    public Cart(Long id, User user, Timestamp createdAt, Timestamp updatedAt) {
+    public CartItem(Long id, Cart cart, ProductSku productSku, int quantity, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
-        this.user = user;
+        this.cart = cart;
+        this.productSku = productSku;
+        this.quantity = quantity;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -55,12 +65,28 @@ public class Cart {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public ProductSku getProductSku() {
+        return productSku;
+    }
+
+    public void setProductSku(ProductSku productSku) {
+        this.productSku = productSku;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public Timestamp getCreatedAt() {
