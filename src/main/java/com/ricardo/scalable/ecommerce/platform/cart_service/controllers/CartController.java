@@ -62,9 +62,9 @@ public class CartController {
         if (result.hasErrors()) {
             return validation(result);
         }
-        Optional<Cart> cartOptional = cartService.save(cart);
-        if (cartOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(cartOptional.orElseThrow());
+        Optional<Cart> createdCartOptional = cartService.save(cart);
+        if (createdCartOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdCartOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
 
@@ -79,9 +79,9 @@ public class CartController {
         if (result.hasErrors()) {
             return validation(result);
         }
-        Optional<Cart> cartOptional = cartService.update(cart, id);
-        if (cartOptional.isPresent()) {
-            return ResponseEntity.ok(cartOptional.orElseThrow());
+        Optional<Cart> updatedCartOptional = cartService.update(cart, id);
+        if (updatedCartOptional.isPresent()) {
+            return ResponseEntity.ok(updatedCartOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
