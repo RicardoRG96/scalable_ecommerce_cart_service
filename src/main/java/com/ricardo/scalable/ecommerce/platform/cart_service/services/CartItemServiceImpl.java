@@ -16,7 +16,7 @@ import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.dto.Car
 import com.ricardo.scalable.ecommerce.platform.libs_common.entities.ProductSku;
 
 @Service
-public class CartItemImpl implements CartItemService {
+public class CartItemServiceImpl implements CartItemService {
 
     @Autowired
     private CartItemRepository cartItemRepository;
