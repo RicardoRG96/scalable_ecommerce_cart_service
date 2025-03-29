@@ -5,6 +5,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class CartControllerTest {
     }
 
     @Test
+    @Order(1)
     void testGetById() {
         client.get()
             .uri("/1")
@@ -55,6 +57,48 @@ public class CartControllerTest {
                     e.printStackTrace();
                 }
             });
+    }
+
+    @Test
+    @Order(2)
+    void testGetByIdNotFound() {
+        client.get()
+            .uri("/9999")
+            .exchange()
+            .expectStatus().isNotFound();
+    }
+
+
+    @Test
+    @Order(3)
+    void testGetByUserId() {
+        client.get()
+            .uri("/user/2")
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertEquals(2L, json.path("id").asLong()),
+                        () -> assertEquals(2L, json.path("user").path("id").asLong())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    @Test
+    @Order(4)
+    void testGetByUserIdNotFound() {
+        client.get()
+            .uri("/user/9999")
+            .exchange()
+            .expectStatus().isNotFound();
     }
 
     @Test
