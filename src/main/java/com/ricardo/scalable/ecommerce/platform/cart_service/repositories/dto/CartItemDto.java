@@ -1,11 +1,18 @@
 package com.ricardo.scalable.ecommerce.platform.cart_service.repositories.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 public class CartItemDto {
 
+    @NotNull
     private Long cartId;
 
+    @NotNull
     private Long productSkuId;
 
+    @Min(1)
+    @NotNull
     private int quantity;
 
     public CartItemDto() {
