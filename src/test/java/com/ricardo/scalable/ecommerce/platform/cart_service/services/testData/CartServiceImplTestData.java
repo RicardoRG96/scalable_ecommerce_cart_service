@@ -69,7 +69,7 @@ public class CartServiceImplTestData {
         return Optional.of(cart);
     }
 
-    public static Optional<Cart> createCartCreationResponse() {
+    public static Cart createCartCreationResponse() {
         Cart cart = new Cart();
         User user = createUser001().orElseThrow();
 
@@ -78,18 +78,18 @@ public class CartServiceImplTestData {
         cart.setCreatedAt(Timestamp.from(Instant.now()));
         cart.setUpdatedAt(Timestamp.from(Instant.now()));
 
-        return Optional.of(cart);
+        return cart;
     }
 
-    public static Optional<Cart> createCartUpdateResponse() {
+    public static Cart createCartUpdateResponse() {
         Cart cart = new Cart();
-        User user = createUser002().orElseThrow();
+        User user = createUser003().orElseThrow();
 
-        cart.setId(3L);
+        cart.setId(1L);
         cart.setUser(user);
         cart.setCreatedAt(Timestamp.from(Instant.now()));
         cart.setUpdatedAt(Timestamp.from(Instant.now()));
 
-        return Optional.of(cart);
+        return cart;
     }
 }
