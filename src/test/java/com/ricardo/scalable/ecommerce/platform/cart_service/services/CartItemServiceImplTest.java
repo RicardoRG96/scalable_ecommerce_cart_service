@@ -86,4 +86,14 @@ public class CartItemServiceImplTest {
         );
     }
 
+    @Test
+    void testDelete() {
+        when(cartItemRepository.findById(1L)).thenReturn(createCartItem001());
+        doNothing().when(cartItemRepository).deleteById(1L);
+
+        cartItemService.delete(1L);
+
+        verify(cartItemRepository, times(1)).deleteById(1L);
+    }
+
 }
