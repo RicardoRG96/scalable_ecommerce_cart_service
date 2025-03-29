@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,32 @@ public class CartServiceImplTest {
             () -> assertEquals(1L, cart.orElseThrow().getId(), "Cart ID should be 1"),
             () -> assertEquals("Ricardo", cart.orElseThrow().getUser().getFirstName(), "User name should be Ricardo")
         );
+    }
+
+    @Test
+    void testFindByUserId() {
+        when(cartRepository.findByUserId(2L)).thenReturn(createCart002());
+
+        Optional<Cart> cart = cartService.findByUserId(2L);
+
+        assertAll(
+            () -> assertTrue(cart.isPresent(), "Cart should be present"),
+            () -> assertEquals(2L, cart.orElseThrow().getId(), "Cart ID should be 2"),
+            () -> assertEquals("Mateo", cart.orElseThrow().getUser().getFirstName(), "User name should be Mateo")
+        );
+    }
+
+    @Test
+    void testFindAll() {
+        when(cartRepository.findAll()).thenReturn(createListOfCarts());
+
+        List<Cart> carts = cartService.findAll();
+
+        assertEquals(4, carts.size(), "There should be 4 carts");
+        assertEquals("Ricardo", carts.get(0).getUser().getFirstName(), "First cart user name should be Ricardo");
+        assertEquals("Mateo", carts.get(1).getUser().getFirstName(), "Second cart user name should be Mateo");
+        assertEquals("Carla", carts.get(2).getUser().getFirstName(), "Third cart user name should be Juan");
+        assertEquals("Leo", carts.get(3).getUser().getFirstName(), "Fourth cart user name should be Pedro");
     }
 
 }
