@@ -161,9 +161,6 @@ INSERT INTO cart (user_id)
 INSERT INTO cart (user_id)
     VALUES (2);
 
-INSERT INTO cart (user_id)
-    VALUES (3);
-
 
 -- CART ITEMS
 
@@ -181,6 +178,3 @@ INSERT INTO cart_items (cart_id, product_sku_id, quantity)
 
 INSERT INTO cart_items (cart_id, product_sku_id, quantity)
     VALUES (2, 5, 1);
-
-INSERT INTO cart_items (cart_id, product_sku_id, quantity)
-    VALUES (3, 3, 2);

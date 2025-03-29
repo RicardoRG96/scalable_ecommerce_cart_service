@@ -118,7 +118,7 @@ public class CartControllerTest {
                     assertAll(
                         () -> assertNotNull(json),
                         () -> assertTrue(json.isArray()),
-                        () -> assertEquals(3, json.size())
+                        () -> assertEquals(2, json.size())
                     );
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -144,13 +144,41 @@ public class CartControllerTest {
                     JsonNode json = objectMapper.readTree(res.getResponseBody());
                     assertAll(
                         () -> assertNotNull(json),
-                        () -> assertEquals(4L, json.path("id").asLong()),
-                        () -> assertEquals(1L, json.path("user").path("id").asLong())
+                        () -> assertEquals(3L, json.path("id").asLong()),
+                        () -> assertEquals(3L, json.path("user").path("id").asLong())
                     );
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
+    }
+
+    @Test
+    @Order(7)
+    void testCreateCartNotFound() {
+        CartDto requestBody = createCartDto();
+        requestBody.setUserId(9999L);
+
+        client.post()
+            .uri("/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(8)
+    void testCreateCartBadRequest() {
+        CartDto requestBody = createCartDto();
+        requestBody.setUserId(null);
+
+        client.post()
+            .uri("/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isBadRequest();
     }
 
     @Test

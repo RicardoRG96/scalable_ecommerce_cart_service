@@ -6,7 +6,7 @@ public class CartControllerTestData {
 
     public static CartDto createCartDto() {
         CartDto cart = new CartDto();
-        cart.setUserId(1L);
+        cart.setUserId(3L);
 
         return cart;
     }
