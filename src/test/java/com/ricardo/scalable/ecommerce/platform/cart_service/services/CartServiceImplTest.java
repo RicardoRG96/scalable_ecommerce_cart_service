@@ -3,7 +3,6 @@ package com.ricardo.scalable.ecommerce.platform.cart_service.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

@@ -1,4 +1,4 @@
-package com.ricardo.scalable.ecommerce.platform.cart_service.services.testData.user;
+package com.ricardo.scalable.ecommerce.platform.cart_service.services.testData.utils;
 
 import java.sql.Timestamp;
 import java.time.Instant;
