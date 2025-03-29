@@ -182,6 +182,61 @@ public class CartControllerTest {
     }
 
     @Test
+    @Order(9)
+    void testUpdateCart() {
+        CartDto requestBody = createCartDtoToUpdate();
+
+        client.put()
+            .uri("/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertEquals(1L, json.path("id").asLong()),
+                        () -> assertEquals(1L, json.path("user").path("id").asLong())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    @Test
+    @Order(10)
+    void testUpdateCartNotFound() {
+        CartDto requestBody = createCartDtoToUpdate();
+        requestBody.setUserId(9999L);
+
+        client.put()
+            .uri("/9999")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(11)
+    void testUpdateCartBadRequest() {
+        CartDto requestBody = createCartDtoToUpdate();
+        requestBody.setUserId(null);
+
+        client.put()
+            .uri("/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isBadRequest();
+    }
+
+    @Test
     void testProfile() {
         String[] activeProfiles = env.getActiveProfiles();
         assertArrayEquals(new String[] { "test" }, activeProfiles);
