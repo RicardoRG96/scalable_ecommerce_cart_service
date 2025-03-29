@@ -99,6 +99,26 @@ public class CartItemServiceImplTestData {
         return Optional.of(cartItem);
     }
 
+    public static Optional<List<CartItem>> createListOfCartItemsByCartId1() {
+        CartItem cartItem1 = createCartItem001().orElseThrow();
+        CartItem cartItem2 = createCartItem002().orElseThrow();
+
+        return Optional.of(List.of(cartItem1, cartItem2));
+    }
+
+    public static Optional<List<CartItem>> createListOfCartItemsByCartId2() {
+        CartItem cartItem3 = createCartItem003().orElseThrow();
+        CartItem cartItem4 = createCartItem004().orElseThrow();
+
+        return Optional.of(List.of(cartItem3, cartItem4));
+    }
+
+    public static Optional<List<CartItem>> createListOfCartItemsByCartId3() {
+        CartItem cartItem5 = createCartItem005().orElseThrow();
+
+        return Optional.of(List.of(cartItem5));
+    }
+
     public static Optional<CartItem> createCartItemCreationResponse() {
         CartItem cartItem = new CartItem();
         Cart cart = createCart004().orElseThrow();
