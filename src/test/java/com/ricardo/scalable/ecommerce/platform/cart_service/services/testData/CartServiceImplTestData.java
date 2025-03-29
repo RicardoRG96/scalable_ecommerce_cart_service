@@ -1,5 +1,7 @@
 package com.ricardo.scalable.ecommerce.platform.cart_service.services.testData;
 
+import static com.ricardo.scalable.ecommerce.platform.cart_service.services.testData.utils.UserTestData.*;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
@@ -7,8 +9,6 @@ import java.util.Optional;
 
 import com.ricardo.scalable.ecommerce.platform.cart_service.entities.Cart;
 import com.ricardo.scalable.ecommerce.platform.libs_common.entities.User;
-
-import static com.ricardo.scalable.ecommerce.platform.cart_service.services.testData.user.UserTestData.*;
 
 public class CartServiceImplTestData {
 
