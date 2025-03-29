@@ -57,4 +57,33 @@ public class CartItemServiceImplTest {
         );
     }
 
+    @Test
+    void testFindByProductSkuId() {
+        when(cartItemRepository.findByProductSkuId(2L)).thenReturn(createListOfCartItemsByProductSkuId());
+
+        Optional<List<CartItem>> cartItems = cartItemService.findByProductSkuId(2L);
+
+        assertAll(
+            () -> assertTrue(cartItems.isPresent(), "Cart items should be present"),
+            () -> assertEquals(2, cartItems.orElseThrow().size(), "Cart items size should be 2"),
+            () -> assertEquals(1L, cartItems.orElseThrow().get(0).getCart().getId(), "Cart ID should be 1"),
+            () -> assertEquals(2L, cartItems.orElseThrow().get(0).getProductSku().getId(), "Product SKU ID should be 2"),
+            () -> assertEquals(3, cartItems.orElseThrow().get(0).getQuantity(), "Cart item quantity should be 3"),
+            () -> assertEquals(2L, cartItems.orElseThrow().get(1).getCart().getId(), "Cart ID should be 2"),
+            () -> assertEquals(2L, cartItems.orElseThrow().get(1).getProductSku().getId(), "Product SKU ID should be 2"),
+            () -> assertEquals(1, cartItems.orElseThrow().get(1).getQuantity(), "Cart item quantity should be 1")
+        );
+    }
+
+    @Test
+    void testFindAll() {
+        when(cartItemRepository.findAll()).thenReturn(createListOfCartItems());
+
+        List<CartItem> cartItems = cartItemService.findAll();
+
+        assertAll(
+            () -> assertEquals(5, cartItems.size(), "There should be 5 cart items")
+        );
+    }
+
 }

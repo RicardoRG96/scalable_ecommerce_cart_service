@@ -57,7 +57,7 @@ public class CartItemServiceImplTestData {
     public static Optional<CartItem> createCartItem003() {
         CartItem cartItem = new CartItem();
         Cart cart = createCart002().orElseThrow();
-        ProductSku productSku = createProductSku003().orElseThrow();
+        ProductSku productSku = createProductSku002().orElseThrow();
 
         cartItem.setId(3L);
         cartItem.setCart(cart);
@@ -117,6 +117,13 @@ public class CartItemServiceImplTestData {
         CartItem cartItem5 = createCartItem005().orElseThrow();
 
         return Optional.of(List.of(cartItem5));
+    }
+
+    public static Optional<List<CartItem>> createListOfCartItemsByProductSkuId() {
+        CartItem cartItem2 = createCartItem002().orElseThrow();
+        CartItem cartItem3 = createCartItem003().orElseThrow();
+
+        return Optional.of(List.of(cartItem2, cartItem3));
     }
 
     public static Optional<CartItem> createCartItemCreationResponse() {
