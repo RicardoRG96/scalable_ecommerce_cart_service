@@ -6,7 +6,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -16,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import com.ricardo.scalable.ecommerce.platform.cart_service.entities.Cart;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.CartRepository;
+
 import static com.ricardo.scalable.ecommerce.platform.cart_service.services.testData.CartServiceImplTestData.*;
 
 @SpringBootTest
@@ -23,9 +23,6 @@ public class CartServiceImplTest {
 
     @MockitoBean
     private CartRepository cartRepository;
-
-    @MockitoBean
-    private WebClient.Builder client;
 
     @Autowired
     private CartService cartService;
@@ -67,6 +64,16 @@ public class CartServiceImplTest {
         assertEquals("Mateo", carts.get(1).getUser().getFirstName(), "Second cart user name should be Mateo");
         assertEquals("Carla", carts.get(2).getUser().getFirstName(), "Third cart user name should be Juan");
         assertEquals("Leo", carts.get(3).getUser().getFirstName(), "Fourth cart user name should be Pedro");
+    }
+
+    @Test
+    void testDelete() {
+        when(cartRepository.findById(1L)).thenReturn(createCart001());
+        doNothing().when(cartRepository).deleteById(1L);
+
+        cartService.delete(1L);
+
+        verify(cartRepository, times(1)).deleteById(1L);
     }
 
 }
