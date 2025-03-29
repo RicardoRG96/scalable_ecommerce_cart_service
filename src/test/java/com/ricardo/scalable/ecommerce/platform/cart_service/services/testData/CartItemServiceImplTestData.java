@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.ricardo.scalable.ecommerce.platform.cart_service.entities.Cart;
 import com.ricardo.scalable.ecommerce.platform.cart_service.entities.CartItem;
+import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.dto.CartItemDto;
 import com.ricardo.scalable.ecommerce.platform.libs_common.entities.ProductSku;
 
 import static com.ricardo.scalable.ecommerce.platform.cart_service.services.testData.CartServiceImplTestData.*;
@@ -126,7 +127,7 @@ public class CartItemServiceImplTestData {
         return Optional.of(List.of(cartItem2, cartItem3));
     }
 
-    public static Optional<CartItem> createCartItemCreationResponse() {
+    public static CartItem createCartItemCreationResponse() {
         CartItem cartItem = new CartItem();
         Cart cart = createCart004().orElseThrow();
         ProductSku productSku = createProductSku006().orElseThrow();
@@ -134,18 +135,27 @@ public class CartItemServiceImplTestData {
         cartItem.setId(6L);
         cartItem.setCart(cart);
         cartItem.setProductSku(productSku);
-        cartItem.setQuantity(2);
+        cartItem.setQuantity(4);
         cartItem.setCreatedAt(Timestamp.from(Instant.now()));
         cartItem.setUpdatedAt(Timestamp.from(Instant.now()));
 
-        return Optional.of(cartItem);
+        return cartItem;
     }
 
-    public static Optional<CartItem> createCartItemUpdateResponse() {
+    public static CartItem createCartItemUpdateResponse() {
         CartItem cartItem = createCartItem001().orElseThrow();
         cartItem.setQuantity(4);
 
-        return Optional.of(cartItem);
+        return cartItem;
+    }
+
+    public static CartItemDto createCartItemDto() {
+        CartItemDto cartItemDto = new CartItemDto();
+        cartItemDto.setCartId(1L);
+        cartItemDto.setProductSkuId(1L);
+        cartItemDto.setQuantity(4);
+
+        return cartItemDto;
     }
 
 }
