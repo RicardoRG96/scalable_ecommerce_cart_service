@@ -17,6 +17,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.dto.CartDto;
+import static com.ricardo.scalable.ecommerce.platform.cart_service.integrationTests.testData.CartControllerTestData.*;
 
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -99,6 +101,56 @@ public class CartControllerTest {
             .uri("/user/9999")
             .exchange()
             .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(5)
+    void testGetAll() {
+        client.get()
+            .uri("/")
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertTrue(json.isArray()),
+                        () -> assertEquals(3, json.size())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    @Test
+    @Order(6)
+    void testCreateCart() {
+        CartDto requestBody = createCartDto();
+
+        client.post()
+            .uri("/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isCreated()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertEquals(4L, json.path("id").asLong()),
+                        () -> assertEquals(1L, json.path("user").path("id").asLong())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
     }
 
     @Test
