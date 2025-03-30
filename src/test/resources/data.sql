@@ -177,4 +177,4 @@ INSERT INTO cart_items (cart_id, product_sku_id, quantity)
     VALUES (2, 4, 2);
 
 INSERT INTO cart_items (cart_id, product_sku_id, quantity)
-    VALUES (2, 5, 1);
+    VALUES (2, 1, 1);

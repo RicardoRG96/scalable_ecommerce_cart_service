@@ -106,6 +106,64 @@ public class CartItemControllerTest {
     }
 
     @Test
+    @Order(5)
+    void testGetCartItemsByProductSkuId() {
+        client.get()
+            .uri("/cart-items/product-sku/1")
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertTrue(json.isArray()),
+                        () -> assertEquals(2, json.size()),
+                        () -> assertEquals(1L, json.get(0).path("cart").path("id").asLong()),
+                        () -> assertEquals(1L, json.get(0).path("productSku").path("id").asLong()),
+                        () -> assertEquals(1, json.get(0).path("quantity").asInt())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    @Test
+    @Order(6)
+    void testGetCartItemsByProductSkuIdNotFound() {
+        client.get()
+            .uri("/cart-items/product-sku/100")
+            .exchange()
+            .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(7)
+    void testGetAllCartItems() {
+        client.get()
+            .uri("/cart-items")
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertTrue(json.isArray()),
+                        () -> assertEquals(5, json.size())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    @Test
     void testProfile() {
         String[] activeProfiles = env.getActiveProfiles();
         assertArrayEquals(new String[] { "test" }, activeProfiles);
