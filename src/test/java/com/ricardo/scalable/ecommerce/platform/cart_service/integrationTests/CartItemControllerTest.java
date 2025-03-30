@@ -377,6 +377,43 @@ public class CartItemControllerTest {
     }
 
     @Test
+    @Order(21)
+    void testDeleteCartItem() {
+        client.delete()
+            .uri("/cart-items/1")
+            .exchange()
+            .expectStatus().isNoContent();
+
+        client.get()
+            .uri("/cart-items")
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertTrue(json.isArray()),
+                        () -> assertEquals(5, json.size())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    @Test
+    @Order(22)
+    void testGetDeletedCartItem() {
+        client.get()
+            .uri("/cart-items/1")
+            .exchange()
+            .expectStatus().isNotFound();
+    }
+
+    @Test
     void testProfile() {
         String[] activeProfiles = env.getActiveProfiles();
         assertArrayEquals(new String[] { "test" }, activeProfiles);
