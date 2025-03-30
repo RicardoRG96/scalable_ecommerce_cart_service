@@ -17,6 +17,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.dto.CartItemDto;
+import static com.ricardo.scalable.ecommerce.platform.cart_service.integrationTests.testData.CartItemControllerTestData.*;
 
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -161,6 +163,77 @@ public class CartItemControllerTest {
                     e.printStackTrace();
                 }
             });
+    }
+
+    @Test
+    @Order(8)
+    void testCreateCartItem() {
+        CartItemDto requestBody = createCartItemDto();
+
+        client.post()
+            .uri("/cart-items")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isCreated()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertEquals(6L, json.path("id").asLong()),
+                        () -> assertEquals(2L, json.path("cart").path("id").asLong()),
+                        () -> assertEquals(6L, json.path("productSku").path("id").asLong()),
+                        () -> assertEquals(2, json.path("quantity").asInt())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    @Test
+    @Order(9)
+    void testCreateCartItemWithNoProductSkuId() {
+        CartItemDto requestBody = createCartItemDto();
+        requestBody.setProductSkuId(null);
+
+        client.post()
+            .uri("/cart-items")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isBadRequest();
+    }
+
+    @Test
+    @Order(10)
+    void testCreateCartItemWithNoCartId() {
+        CartItemDto requestBody = createCartItemDto();
+        requestBody.setCartId(null);
+
+        client.post()
+            .uri("/cart-items")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isBadRequest();
+    }
+
+    @Test
+    @Order(11)
+    void testCreateCartItemWithNoQuantity() {
+        CartItemDto requestBody = createCartItemDto();
+        requestBody.setQuantity(0);
+
+        client.post()
+            .uri("/cart-items")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isBadRequest();
     }
 
     @Test
