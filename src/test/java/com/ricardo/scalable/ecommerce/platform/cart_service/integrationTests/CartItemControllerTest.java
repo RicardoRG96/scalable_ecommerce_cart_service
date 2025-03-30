@@ -237,6 +237,146 @@ public class CartItemControllerTest {
     }
 
     @Test
+    @Order(12)
+    void tesCreateCartItemNotFoundCartId() {
+        CartItemDto requestBody = createCartItemDto();
+        requestBody.setCartId(9999L);
+
+        client.post()
+            .uri("/cart-items")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(13)
+    void testCreateCartItemNotFoundProductSkuId() {
+        CartItemDto requestBody = createCartItemDto();
+        requestBody.setProductSkuId(9999L);
+
+        client.post()
+            .uri("/cart-items")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(14)
+    void testUpdateCartItem() {
+        CartItemDto requestBody = createCartItemDtoToUpdate();
+
+        client.put()
+            .uri("/cart-items/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertEquals(1L, json.path("id").asLong()),
+                        () -> assertEquals(1L, json.path("cart").path("id").asLong()),
+                        () -> assertEquals(1L, json.path("productSku").path("id").asLong()),
+                        () -> assertEquals(3, json.path("quantity").asInt())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    @Test
+    @Order(15)
+    void testUpdateCartItemNotFoundCartItemId() {
+        CartItemDto requestBody = createCartItemDtoToUpdate();
+
+        client.put()
+            .uri("/cart-items/9999")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(16)
+    void testUpdateCartItemNotFoundCartId() {
+        CartItemDto requestBody = createCartItemDtoToUpdate();
+        requestBody.setCartId(9999L);
+
+        client.put()
+            .uri("/cart-items/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(17)
+    void testUpdateCartItemNotFoundProductSkuId() {
+        CartItemDto requestBody = createCartItemDtoToUpdate();
+        requestBody.setProductSkuId(9999L);
+
+        client.put()
+            .uri("/cart-items/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(18)
+    void testUpdateCartItemWithNoProductSkuId() {
+        CartItemDto requestBody = createCartItemDtoToUpdate();
+        requestBody.setProductSkuId(null);
+
+        client.put()
+            .uri("/cart-items/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isBadRequest();
+    }
+
+    @Test
+    @Order(19)
+    void testUpdateCartItemWithNoCartId() {
+        CartItemDto requestBody = createCartItemDtoToUpdate();
+        requestBody.setCartId(null);
+
+        client.put()
+            .uri("/cart-items/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isBadRequest();
+    }
+
+    @Test
+    @Order(20)
+    void testUpdateCartItemWithNoQuantity() {
+        CartItemDto requestBody = createCartItemDtoToUpdate();
+        requestBody.setQuantity(0);
+
+        client.put()
+            .uri("/cart-items/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isBadRequest();
+    }
+
+    @Test
     void testProfile() {
         String[] activeProfiles = env.getActiveProfiles();
         assertArrayEquals(new String[] { "test" }, activeProfiles);
