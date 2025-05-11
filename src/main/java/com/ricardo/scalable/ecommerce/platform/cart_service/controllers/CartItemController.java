@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ricardo.scalable.ecommerce.platform.cart_service.entities.CartItem;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.dto.CartItemDto;
 import com.ricardo.scalable.ecommerce.platform.cart_service.services.CartItemService;
+import com.ricardo.scalable.ecommerce.platform.cart_service.services.StockService;
 
 import jakarta.validation.Valid;
 
@@ -28,6 +29,9 @@ public class CartItemController {
 
     @Autowired
     private CartItemService cartItemService;
+
+    @Autowired
+    private StockService stockService;
 
     @GetMapping("/cart-items/{id}")
     public ResponseEntity<CartItem> getCartItemById(@PathVariable Long id) {
@@ -75,6 +79,7 @@ public class CartItemController {
         if (result.hasErrors()) {
             return validation(result);
         }
+        stockService.verifyStock(cartItem);
         Optional<CartItem> createdCartItemOptional = cartItemService.save(cartItem);
 
         if (createdCartItemOptional.isPresent()) {
@@ -92,6 +97,7 @@ public class CartItemController {
         if (result.hasErrors()) {
             return validation(result);
         }
+        stockService.verifyStock(cartItem);
         Optional<CartItem> updatedCartItemOptional = cartItemService.update(cartItem, id);
 
         if (updatedCartItemOptional.isPresent()) {

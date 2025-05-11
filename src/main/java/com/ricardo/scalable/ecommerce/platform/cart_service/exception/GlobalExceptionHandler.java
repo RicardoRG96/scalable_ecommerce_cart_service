@@ -13,7 +13,7 @@ import com.ricardo.scalable.ecommerce.platform.libs_common.exceptions.Insufficie
 import com.ricardo.scalable.ecommerce.platform.libs_common.exceptions.ResourceNotFoundException;
 
 @RestControllerAdvice
-public class GlobalHandlerException {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientStockException.class)
     public ResponseEntity<Map<String, Object>> handleInsufficientStockException(InsufficientStockException ex) {
