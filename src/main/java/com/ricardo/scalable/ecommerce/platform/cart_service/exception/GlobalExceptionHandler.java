@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InsufficientStockException.class)
     public ResponseEntity<Map<String, Object>> handleInsufficientStockException(InsufficientStockException ex) {
         Map<String, Object> errorBody = new HashMap<>();
-        errorBody.put("error", "Stock insuficiente");
+        errorBody.put("error", "Insufficient stock");
         errorBody.put("timestamp", LocalDateTime.now());
         errorBody.put("message", ex.getMessage());
         errorBody.put("status", HttpStatus.BAD_REQUEST.value());
