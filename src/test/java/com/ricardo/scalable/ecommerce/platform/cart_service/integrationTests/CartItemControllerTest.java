@@ -266,7 +266,7 @@ public class CartItemControllerTest {
 
     @Test
     @Order(14)
-    void createCartItem_whenProductSkuHasInsufficientStock_shouldReturnBadRequest() {
+    void createCartItem_whenProductSkuHasInsufficientStock_shouldReturn400AndErrorMessage() {
         CartItemDto requestBody = createCartItemDto();
         requestBody.setQuantity(120);
 
@@ -294,6 +294,34 @@ public class CartItemControllerTest {
 
     @Test
     @Order(15)
+    void createCartItem_whenProductSkuDoesNotExist_shouldReturn404AndErrorMessage() {
+        CartItemDto requestBody = createCartItemDto();
+        requestBody.setProductSkuId(9999L); // set a non-existing product SKU ID
+
+        client.post()
+            .uri("/cart-items")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isNotFound()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertEquals("Resource not found", json.path("error").asText()),
+                        () -> assertEquals("Product SKU not found: 9999", json.path("message").asText())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    @Test
+    @Order(16)
     void testUpdateCartItem() {
         CartItemDto requestBody = createCartItemDtoToUpdate();
 
@@ -322,7 +350,7 @@ public class CartItemControllerTest {
     }
 
     @Test
-    @Order(16)
+    @Order(17)
     void testUpdateCartItemNotFoundCartItemId() {
         CartItemDto requestBody = createCartItemDtoToUpdate();
 
@@ -335,7 +363,7 @@ public class CartItemControllerTest {
     }
 
     @Test
-    @Order(17)
+    @Order(18)
     void testUpdateCartItemNotFoundCartId() {
         CartItemDto requestBody = createCartItemDtoToUpdate();
         requestBody.setCartId(9999L);
@@ -349,7 +377,7 @@ public class CartItemControllerTest {
     }
 
     @Test
-    @Order(18)
+    @Order(19)
     void testUpdateCartItemNotFoundProductSkuId() {
         CartItemDto requestBody = createCartItemDtoToUpdate();
         requestBody.setProductSkuId(9999L);
@@ -363,7 +391,7 @@ public class CartItemControllerTest {
     }
 
     @Test
-    @Order(19)
+    @Order(20)
     void testUpdateCartItemWithNoProductSkuId() {
         CartItemDto requestBody = createCartItemDtoToUpdate();
         requestBody.setProductSkuId(null);
@@ -377,7 +405,7 @@ public class CartItemControllerTest {
     }
 
     @Test
-    @Order(20)
+    @Order(21)
     void testUpdateCartItemWithNoCartId() {
         CartItemDto requestBody = createCartItemDtoToUpdate();
         requestBody.setCartId(null);
@@ -391,7 +419,7 @@ public class CartItemControllerTest {
     }
 
     @Test
-    @Order(21)
+    @Order(22)
     void testUpdateCartItemWithNoQuantity() {
         CartItemDto requestBody = createCartItemDtoToUpdate();
         requestBody.setQuantity(0);
@@ -405,7 +433,7 @@ public class CartItemControllerTest {
     }
 
     @Test
-    @Order(22)
+    @Order(23)
     void updateCartItem_whenProductSkuHasInsufficientStock_shouldReturnBadRequest() {
         CartItemDto requestBody = createCartItemDtoToUpdate();
         requestBody.setQuantity(600);
@@ -433,7 +461,35 @@ public class CartItemControllerTest {
     }
 
     @Test
-    @Order(23)
+    @Order(24)
+    void updateCartItem_whenProductSkuDoesNotExist_shouldReturnNotFound() {
+        CartItemDto requestBody = createCartItemDtoToUpdate();
+        requestBody.setProductSkuId(9999L); // set a non-existing product SKU ID
+
+        client.put()
+            .uri("/cart-items/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .exchange()
+            .expectStatus().isNotFound()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody()
+            .consumeWith(res -> {
+                try {
+                    JsonNode json = objectMapper.readTree(res.getResponseBody());
+                    assertAll(
+                        () -> assertNotNull(json),
+                        () -> assertEquals("Resource not found", json.path("error").asText()),
+                        () -> assertEquals("Product SKU not found: 9999", json.path("message").asText())
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+    }
+
+    @Test
+    @Order(25)
     void testDeleteCartItem() {
         client.delete()
             .uri("/cart-items/1")
@@ -461,7 +517,7 @@ public class CartItemControllerTest {
     }
 
     @Test
-    @Order(24)
+    @Order(26)
     void testGetDeletedCartItem() {
         client.get()
             .uri("/cart-items/1")
