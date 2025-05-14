@@ -1,19 +1,23 @@
 package com.ricardo.scalable.ecommerce.platform.cart_service.entities;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ricardo.scalable.ecommerce.platform.libs_common.entities.User;
 
 @Entity
@@ -26,8 +30,11 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    @NotNull
     private User user;
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<CartItem> items = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -61,6 +68,14 @@ public class Cart {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<CartItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<CartItem> items) {
+        this.items = items;
     }
 
     public Timestamp getCreatedAt() {

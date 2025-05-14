@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
 
@@ -26,15 +25,12 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
-    @NotNull
     private Cart cart;
 
     @ManyToOne
     @JoinColumn(name = "product_sku_id")
-    @NotNull
     private ProductSku productSku;
 
-    @NotNull
     private int quantity;
 
     @CreationTimestamp
