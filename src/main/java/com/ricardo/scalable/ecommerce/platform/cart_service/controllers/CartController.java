@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ricardo.scalable.ecommerce.platform.cart_service.entities.Cart;
+import com.ricardo.scalable.ecommerce.platform.libs_common.entities.Cart;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.dto.CartDto;
 import com.ricardo.scalable.ecommerce.platform.cart_service.services.CartService;
 import static com.ricardo.scalable.ecommerce.platform.libs_common.validation.RequestBodyValidation.*;

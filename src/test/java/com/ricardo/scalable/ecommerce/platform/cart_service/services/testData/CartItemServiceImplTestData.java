@@ -5,8 +5,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import com.ricardo.scalable.ecommerce.platform.cart_service.entities.Cart;
-import com.ricardo.scalable.ecommerce.platform.cart_service.entities.CartItem;
+import com.ricardo.scalable.ecommerce.platform.libs_common.entities.Cart;
+import com.ricardo.scalable.ecommerce.platform.libs_common.entities.CartItem;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.dto.CartItemDto;
 import com.ricardo.scalable.ecommerce.platform.libs_common.entities.ProductSku;
 

@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ricardo.scalable.ecommerce.platform.cart_service.entities.Cart;
-import com.ricardo.scalable.ecommerce.platform.cart_service.entities.CartItem;
+import com.ricardo.scalable.ecommerce.platform.libs_common.entities.Cart;
+import com.ricardo.scalable.ecommerce.platform.libs_common.entities.CartItem;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.CartItemRepository;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.CartRepository;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.ProductSkuRepository;

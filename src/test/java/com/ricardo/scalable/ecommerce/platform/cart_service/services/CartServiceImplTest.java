@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import com.ricardo.scalable.ecommerce.platform.cart_service.entities.Cart;
+import com.ricardo.scalable.ecommerce.platform.libs_common.entities.Cart;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.CartRepository;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.UserRepository;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.dto.CartDto;

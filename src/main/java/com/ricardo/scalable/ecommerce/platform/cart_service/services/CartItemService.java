@@ -3,7 +3,7 @@ package com.ricardo.scalable.ecommerce.platform.cart_service.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.ricardo.scalable.ecommerce.platform.cart_service.entities.CartItem;
+import com.ricardo.scalable.ecommerce.platform.libs_common.entities.CartItem;
 import com.ricardo.scalable.ecommerce.platform.cart_service.repositories.dto.CartItemDto;
 
 public interface CartItemService {
